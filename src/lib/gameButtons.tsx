@@ -1,6 +1,6 @@
 import { ButtonProps } from "../components/Button.tsx";
 
-export type gameButtonsType = Omit<ButtonProps, 'setPlayerPattern'>
+export type gameButtonsType = Omit<ButtonProps, 'setPlayerPattern' | 'setDisableButton'>
 
 const gameButtons: gameButtonsType[] = [
     {

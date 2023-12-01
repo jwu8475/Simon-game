@@ -6,16 +6,21 @@ export type ButtonProps = {
     index?: number;
     disableButton?: boolean;
     setPlayerPattern: React.Dispatch<React.SetStateAction<(number | undefined)[]>>;
+    setDisableButton: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Button = memo(({ bgColor, onSwitch, index, disableButton, setPlayerPattern }: ButtonProps) => {
+export const Button = memo(({ bgColor, onSwitch, index, disableButton, setDisableButton, setPlayerPattern }: ButtonProps) => {
     const [brightness, setBrightness] = useState('');
     
     const handleClick = () => {
         if (!disableButton) {
+            setDisableButton(true)
             setPlayerPattern((prevPattern) => prevPattern ? [...prevPattern, index] : [index]);
             setBrightness('brightness-150')
-            setTimeout(() => setBrightness(''), 500)
+            setTimeout(() => {
+                setBrightness('')
+                setDisableButton(false)
+            }, 500)
         }
     }
 
@@ -24,6 +29,6 @@ export const Button = memo(({ bgColor, onSwitch, index, disableButton, setPlayer
     }, [onSwitch])
 
     return (
-        <button onClick={handleClick} className={`${bgColor} ${brightness} w-24 h-24`} disabled={disableButton} />
+        <button onClick={handleClick} className={`${bgColor} ${brightness} w-24 h-24`} />
     )
 })

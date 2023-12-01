@@ -62,7 +62,7 @@ const App = () => {
       {gameButtons.map((gameButton, index) => {
         const {bgColor, onSwitch} = gameButton;
         return (
-          <Button bgColor={bgColor} onSwitch={onSwitch} index={index} setPlayerPattern={setPlayerPattern} disableButton={disableButton} key={index}/>
+          <Button bgColor={bgColor} onSwitch={onSwitch} index={index} setPlayerPattern={setPlayerPattern} disableButton={disableButton} setDisableButton={setDisableButton} key={index}/>
         )
       })}
       </div>
