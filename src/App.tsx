@@ -6,9 +6,9 @@ import { Gameover } from './components/Gameover.tsx'
 
 const App = () => {
   const [gameButtons, setGameButtons] = useState(() => getInitialButtons());
-  const [currentPattern, setCurrentPattern] = useState(() => [generateRandomIndex(4)]);
+  const [currentPattern, setCurrentPattern] = useState<number[]>([]);
   const [disableButton, setDisableButton] = useState(true);
-  const [gameOver, setGameOver] = useState(false);
+  const [gameState, setGameState] = useState('stopped');
   const [playerPattern, setPlayerPattern] = useState<(number | undefined)[]>([]);
 
   const playPattern = useCallback((patternArr: patternArrType, newButtonSetter: React.Dispatch<React.SetStateAction<gameButtonsType[]>>) => {
@@ -33,13 +33,15 @@ const App = () => {
   }
 
   useEffect(() => {
-    setTimeout(() => playPattern(currentPattern, setGameButtons), 500)
-  }, [currentPattern, playPattern])
+    if (gameState === 'start') {
+      setTimeout(() => playPattern(currentPattern, setGameButtons), 500)
+    }
+  }, [currentPattern, playPattern, gameState])
 
   useEffect(() => {
     for (let i=0; i<playerPattern.length; i++) {
       if (playerPattern[i] !== currentPattern[i]) {
-        setGameOver(true);
+        setGameState('over');
         setDisableButton(true);
         break;
       }
@@ -52,6 +54,10 @@ const App = () => {
 
   return (
     <main className='flex h-screen justify-center items-center' >
+      {gameState === 'stopped' && (<button className="border-2 border-black rounded" onClick={() => {
+        setGameState('start')
+        setCurrentPattern([generateRandomIndex(4)])
+      }}>START GAME</button>)}
       <div className='w-48 h-48'>
       {gameButtons.map((gameButton, index) => {
         const {bgColor, onSwitch} = gameButton;
@@ -60,7 +66,7 @@ const App = () => {
         )
       })}
       </div>
-      {gameOver && (<Gameover />)}
+      {gameState === 'over' && (<Gameover setGameState={setGameState} setCurrentPattern={setCurrentPattern} setPlayerPattern={setPlayerPattern} />)}
     </main>
   )
 }
