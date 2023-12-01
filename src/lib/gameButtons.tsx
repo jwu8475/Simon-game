@@ -1,6 +1,8 @@
-import { ButtonProps } from "../components/button.tsx";
+import { ButtonProps } from "../components/Button.tsx";
 
-const gameButtons: ButtonProps[] = [
+export type gameButtonsType = Omit<ButtonProps, 'setPlayerPattern'>
+
+const gameButtons: gameButtonsType[] = [
     {
     bgColor: 'bg-red-600',
     onSwitch: false,
@@ -19,6 +21,17 @@ const gameButtons: ButtonProps[] = [
     },
 ];
 
+export type patternArrType = number[];
+
 export const getInitialButtons = () => {
     return gameButtons;
+}
+
+
+export const generateRandomIndex = (max: number) => {
+    return Math.floor(Math.random() * max)
+}
+
+export const addPattern = (patterns: patternArrType) => {
+    patterns.push(generateRandomIndex(4))
 }
